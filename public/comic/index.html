@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{background:#111;display:flex;justify-content:center;}
+
+.comic{
+    position:relative;
+    width:min(100vw,383px);
+    container-type:inline-size;
+    container-name:comic;
+}
+
+.background{display:block;width:100%;height:auto;}
+
+/* ==========================
+   LANDING PAGE — text only
+   ========================== */
+
+.landing{
+    position:relative;
+    width:100%;
+    min-height:100svh;
+    background:radial-gradient(circle at 50% 30%, #1a242c 0%, #111 70%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:8cqw;
+    overflow:hidden;
+}
+
+.landing-title{
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:16cqw;
+    line-height:1;
+    color:#ff5c33;
+    -webkit-text-stroke:2px #111;
+    text-shadow:4px 4px 0 #111;
+    animation: title-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes title-pulse{
+    0%,100% { transform:scale(1); }
+    50%     { transform:scale(1.04); }
+}
+
+.landing-tagline{
+    margin-top:4cqw;
+    font-family:Georgia, serif;
+    font-style:italic;
+    font-size:5cqw;
+    color:#ddd;
+    opacity:0;
+    animation: fade-in-tag 1.2s ease forwards .5s;
+}
+
+@keyframes fade-in-tag{
+    to{ opacity:1; }
+}
+
+.landing-prompt{
+    margin-top:10cqw;
+    font-family:Arial, sans-serif;
+    font-size:3.5cqw;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:#8fd3ff;
+    opacity:0;
+    animation: fade-in-tag 1s ease forwards 1.4s,
+               bounce-prompt 1.6s ease-in-out infinite 1.4s;
+}
+
+@keyframes bounce-prompt{
+    0%,100% { transform:translateY(0); }
+    50%     { transform:translateY(6px); }
+}
+
+/* ==========================
+   MONSTER REVEAL (image)
+   ========================== */
+
+.monster{
+    position:absolute;
+    left:50%;
+    top:38%;
+    width:108%;
+    transform:translateX(-50%) scale(0.85);
+    opacity:0;
+    z-index:5;
+    cursor:pointer;
+    transition:transform .7s cubic-bezier(.22,.8,.2,1), opacity .5s ease;
+}
+
+.monster.show{
+    transform:translateX(-50%) scale(1);
+    opacity:1;
+}
+
+.monster.flinch{
+    animation: monster-flinch .35s ease;
+}
+
+@keyframes monster-flinch{
+    0%   { transform:translateX(-50%) scale(1) rotate(0deg); }
+    30%  { transform:translateX(-50%) scale(1.05) rotate(-3deg); }
+    60%  { transform:translateX(-50%) scale(0.98) rotate(2deg); }
+    100% { transform:translateX(-50%) scale(1) rotate(0deg); }
+}
+
+.monster-text{
+    position:absolute;
+    left:50%;
+    top:55%;
+    width:103%;
+    transform:translateX(-50%) scale(0.5);
+    opacity:0;
+    z-index:6;
+    pointer-events:none;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1) .35s,
+               opacity .3s ease .35s;
+}
+
+.monster-text.show{
+    transform:translateX(-50%) scale(1);
+    opacity:1;
+}
+
+/* ==========================
+   BOOM (image)
+   ========================== */
+
+.boom{
+    position:absolute;
+    left:0%;
+    top:46%;
+    width:101%;
+    transform:scale(0.1);
+    opacity:0;
+    z-index:6;
+    pointer-events:none;
+    transition:transform .8s cubic-bezier(.22,.8,.2,1), opacity .4s ease;
+}
+
+.boom.show{
+    transform:scale(1.5);
+    opacity:1;
+}
+
+.boomtext{
+    position:absolute;
+    left:0%;
+    top:60%;
+    width:101%;
+    transform:scale(0.1);
+    opacity:0;
+    z-index:6;
+    pointer-events:none;
+    transition:transform .6s cubic-bezier(.34,1.56,.64,1) .3s,
+               opacity .3s ease .3s;
+}
+
+.boomtext.show{
+    transform:scale(1);
+    opacity:1;
+}
+
+/* ==========================
+   PAGE1 — tap hint
+   ========================== */
+
+.tap-hint{
+    position:absolute;
+    left:50%;
+    bottom:40%;
+    transform:translateX(-50%);
+    z-index:10;
+    font-family:Arial, sans-serif;
+    font-size:3.2cqw;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#fff;
+    background:rgba(0,0,0,.5);
+    padding:1.5cqw 3cqw;
+    border-radius:999px;
+    opacity:0;
+    pointer-events:none;
+    animation: hint-pulse 1.8s ease-in-out infinite;
+    transition:opacity .4s ease;
+}
+
+.tap-hint.show{ opacity:1; }
+
+@keyframes hint-pulse{
+    0%,100% { opacity:.55; }
+    50%     { opacity:1; }
+}
+
+/* ==========================
+   TEXT EFFECTS
+   ========================== */
+
+.growl-text{
+    position:absolute;
+    left:50%;
+    top:70%;
+    width:70%;
+    opacity:0;
+    z-index:7;
+    pointer-events:none;
+    text-align:center;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:10cqw;
+    line-height:1;
+    color:#ff5c33;
+    -webkit-text-stroke:2px #111;
+    text-shadow:3px 3px 0 #111;
+}
+
+.growl-text.show{
+    animation:
+        pop-in .35s cubic-bezier(.34,1.56,.64,1) forwards,
+        rumble-loop .15s linear .35s infinite;
+}
+
+@keyframes pop-in{
+    0%   { transform:translateX(-50%) scale(0.1); opacity:0; }
+    100% { transform:translateX(-50%) scale(1); opacity:1; }
+}
+
+@keyframes rumble-loop{
+    0%   { transform:translateX(-50%) translate(0,0) rotate(4deg); }
+    25%  { transform:translateX(-50%) translate(-1.5px,1px) rotate(3deg); }
+    50%  { transform:translateX(-50%) translate(1.5px,-1px) rotate(5deg); }
+    75%  { transform:translateX(-50%) translate(-1px,-1.5px) rotate(3deg); }
+    100% { transform:translateX(-50%) translate(0,0) rotate(4deg); }
+}
+
+.stomp-text{
+    position:absolute;
+    left:8%;
+    top:78%;
+    width:55%;
+    opacity:0;
+    z-index:7;
+    pointer-events:none;
+    text-align:left;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:8cqw;
+    line-height:1;
+    color:#fff;
+    -webkit-text-stroke:2px #111;
+    text-shadow:3px 3px 0 #111;
+}
+
+.stomp-text.show{
+    animation: slam-in 2s cubic-bezier(.17,.89,.32,1.49) forwards;
+}
+
+@keyframes slam-in{
+    0%   { transform:scale(3) rotate(-6deg); opacity:1; }
+    60%  { transform:scale(0.85) rotate(-6deg); opacity:1; }
+    80%  { transform:scale(1.1) rotate(-6deg); }
+    100% { transform:scale(1) rotate(-6deg); }
+}
+
+/* ==========================
+   MOVE IN
+   ========================== */
+
+.movein{
+    position:absolute;
+    left:50%;
+    top:35%;
+    width:90%;
+    transform:translate(-180%,0);
+    opacity:0;
+    z-index:8;
+    transition:transform .9s cubic-bezier(.22,.8,.2,1), opacity .6s ease;
+}
+
+.movein.show{
+    transform:translate(-56%, 0);
+    opacity:1;
+}
+
+.movein-trigger{
+    position:absolute;
+    left:50%;
+    top:35%;
+    width:10px;
+    height:10px;
+    opacity:0;
+    pointer-events:none;
+}
+
+/* ==========================
+   CRUNCH (image) — now tappable
+   ========================== */
+
+.crunch{
+    position:absolute;
+    left:50%;
+    top:55%;
+    width:100%;
+    transform:translateX(-50%) scale(0.6);
+    opacity:0;
+    z-index:6;
+    cursor:pointer;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1) .5s,
+               opacity .3s ease .5s;
+}
+
+.crunch.show{
+    transform:translateX(-50%) scale(1);
+    opacity:1;
+}
+
+.crunch.restrike{
+    animation: crunch-restrike .4s ease;
+}
+
+@keyframes crunch-restrike{
+    0%   { transform:translateX(-50%) scale(1); }
+    30%  { transform:translateX(-50%) scale(1.15); }
+    60%  { transform:translateX(-50%) scale(0.92); }
+    100% { transform:translateX(-50%) scale(1); }
+}
+
+.crunch-text{
+    position:absolute;
+    left:50%;
+    top:8%;
+    width:70%;
+    transform:translateX(-50%) scale(0.3) rotate(-8deg);
+    opacity:0;
+    z-index:7;
+    pointer-events:none;
+    text-align:center;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:11cqw;
+    line-height:1;
+    color:#fff200;
+    -webkit-text-stroke:2px #111;
+    text-shadow:3px 3px 0 #111;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1) .75s,
+               opacity .3s ease .75s;
+}
+
+.crunch-text.show{
+    transform:translateX(-50%) scale(1) rotate(-8deg);
+    opacity:1;
+}
+
+.crunch-text.restrike{
+    animation: pop-in .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+.clang-text{
+    position:absolute;
+    left:60%;
+    top:20%;
+    width:45%;
+    opacity:0;
+    z-index:9;
+    pointer-events:none;
+    text-align:center;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:9cqw;
+    line-height:1;
+    color:#8fd3ff;
+    -webkit-text-stroke:2px #111;
+    text-shadow:3px 3px 0 #111;
+}
+
+.clang-text.show{
+    animation:
+        pop-in .3s cubic-bezier(.34,1.56,.64,1) forwards,
+        buzz-loop .08s linear .3s 6;
+}
+
+@keyframes buzz-loop{
+    0%,100% { transform:scale(1) rotate(10deg) translate(0,0); }
+    50%     { transform:scale(1) rotate(10deg) translate(2px,-1px); }
+}
+
+.swoosh-text{
+    position:absolute;
+    left:5%;
+    top:40%;
+    width:40%;
+    opacity:0;
+    z-index:9;
+    pointer-events:none;
+    text-align:left;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:7cqw;
+    line-height:1;
+    color:#fff;
+    -webkit-text-stroke:1.5px #111;
+    text-shadow:2px 2px 0 #111;
+}
+
+.swoosh-text.show{
+    animation: jag-in 2s cubic-bezier(.6,-0.28,.74,.05) forwards;
+}
+
+@keyframes jag-in{
+    0%   { transform:scale(0.3) skew(-25deg,8deg); opacity:0; }
+    50%  { transform:scale(1.2) skew(15deg,-4deg); opacity:1; }
+    100% { transform:scale(1) skew(-4deg,0deg); }
+}
+
+.tap-hint2{
+    position:absolute;
+    left:50%;
+    bottom:20%;
+    transform:translateX(-50%);
+    z-index:10;
+    font-family:Arial, sans-serif;
+    font-size:3.2cqw;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#fff;
+    background:rgba(0,0,0,.5);
+    padding:1.5cqw 3cqw;
+    border-radius:999px;
+    opacity:0;
+    pointer-events:none;
+    animation: hint-pulse 1.8s ease-in-out infinite;
+    transition:opacity .4s ease;
+}
+
+.tap-hint2.show{ opacity:1; }
+
+/* ==========================
+   CLOUDS / GRASS — now tappable
+   ========================== */
+
+.cloud{
+    position:absolute;
+    top:5%;
+    width:62%;
+    z-index:5;
+    transition:transform 1s ease;
+}
+
+.cloud-left{left:-8%;transform:translateX(-120%);}
+.cloud-right{right:-8%;transform:translateX(120%);}
+
+.cloud-left.show{transform:translateX(13%);}
+.cloud-right.show{transform:translateX(-13%);}
+
+.cloud-trigger{
+    position:absolute;
+    left:50%;
+    top:5%;
+    width:10px;
+    height:10px;
+    opacity:0;
+    pointer-events:none;
+}
+
+.cloud.gust{
+    animation: cloud-gust .6s ease;
+}
+
+@keyframes cloud-gust{
+    0%,100% { filter:none; }
+    50%     { transform:translateX(8px); }
+}
+
+.grass{
+    position:absolute;
+    left:50%;
+    top:60%;
+    width:100%;
+    transform:translateX(-50%);
+    z-index:2;
+    cursor:pointer;
+}
+
+.grass.gust{
+    animation: grass-gust .5s ease;
+}
+
+@keyframes grass-gust{
+    0%,100% { transform:translateX(-50%) rotate(0deg); }
+    50%     { transform:translateX(-50%) rotate(-2deg) scale(1.02); }
+}
+
+.page3-text{
+    position:absolute;
+    left:50%;
+    top:15%;
+    width:80%;
+    transform:translateX(-50%) translateY(-30px);
+    opacity:0;
+    z-index:6;
+    pointer-events:none;
+    text-align:center;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:9cqw;
+    line-height:1;
+    color:#fff;
+    -webkit-text-stroke:2px #111;
+    text-shadow:3px 3px 0 #111;
+    transition:transform .7s ease .6s, opacity .5s ease .6s;
+}
+
+.page3-text.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+
+.hiss-text{
+    position:absolute;
+    left:65%;
+    top:5%;
+    width:45%;
+    opacity:0;
+    z-index:7;
+    pointer-events:none;
+    text-align:center;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:7cqw;
+    line-height:1;
+    color:#c9ff8f;
+    -webkit-text-stroke:1.5px #111;
+    text-shadow:2px 2px 0 #111;
+}
+
+.hiss-text.show{
+    animation: flicker-strike .5s steps(2, jump-end) forwards;
+}
+
+@keyframes flicker-strike{
+    0%   { opacity:0; transform:scale(0.6); }
+    15%  { opacity:1; transform:scale(1.3); }
+    30%  { opacity:0.1; }
+    45%  { opacity:1; }
+    60%  { opacity:0.2; }
+    100% { opacity:1; transform:scale(1); }
+}
+
+.crackle-text{
+    position:absolute;
+    left:6%;
+    top:65%;
+    width:45%;
+    transform:scale(0.3) rotate(-10deg);
+    opacity:0;
+    z-index:7;
+    pointer-events:none;
+    text-align:left;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:7cqw;
+    line-height:1;
+    color:#ffb84d;
+    -webkit-text-stroke:1.5px #111;
+    text-shadow:2px 2px 0 #111;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1) .4s,
+               opacity .3s ease .4s;
+}
+
+.crackle-text.show{
+    transform:scale(1) rotate(-10deg);
+    opacity:1;
+}
+
+.gone-text{
+    position:absolute;
+    left:50%;
+    top:85%;
+    width:60%;
+    transform:translateX(-50%) scale(0.3);
+    opacity:0;
+    z-index:7;
+    pointer-events:none;
+    text-align:center;
+    font-family:Impact, "Arial Black", sans-serif;
+    font-size:6cqw;
+    line-height:1;
+    color:#ddd;
+    -webkit-text-stroke:1.5px #111;
+    text-shadow:2px 2px 0 #111;
+    transition:transform .5s cubic-bezier(.34,1.56,.64,1) .6s,
+               opacity .3s ease .6s;
+}
+
+.gone-text.show{
+    transform:translateX(-50%) scale(1);
+    opacity:1;
+}
+
+.page{position:relative;width:100%;overflow:hidden;}
+.page .background{display:block;width:100%;height:auto;}
+
+/* ==========================
+   SOUND BUTTONS
+   ========================== */
+
+.sound-btn{
+    position:absolute;
+    right:4%;
+    bottom:4%;
+    z-index:20;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:none;
+    background:rgba(0,0,0,0.55);
+    color:#fff;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.sound-btn:active{
+    background:rgba(0,0,0,0.8);
+}
+
+.gif-panel{
+    position:absolute;
+    display:block;
+    z-index:4;
+}
+
+.gates{
+    left:20.8%;
+    top:28%;
+    width:58.4%;
+}
+
+.monster-swoosh{
+    left:0;
+    top:0%;
+    width:100%;
+}
+
+.rain{
+    left:0;
+    top:33.5%;
+    width:100%;
+}
+
+.portal{
+    left:0;
+    bottom:0;
+    width:100%;
+}
+</style>
+<link rel="stylesheet" href="style.css">
+<title>Farah Comic</title>
+</head>
+
+<body>
+
+<div class="comic">
+
+    <!-- ================= LANDING PAGE (text only) ================= -->
+    <section class="landing">
+        <div class="landing-title">FARAH</div>
+        <div class="landing-tagline">A beast wakes. A blade answers.</div>
+        <div class="landing-prompt">Scroll to begin ↓</div>
+    </section>
+
+    <!-- ================= PAGE 1 ================= -->
+    <section class="page page1">
+        <img class="background" src="IMG_0223.PNG">
+
+        <img class="monster" src="IMG_0239.GIF">
+        <img class="monster-text" src="IMG_0238.GIF">
+        <div class="growl-text">RAAAWR</div>
+        <div class="stomp-text">STOMP!</div>
+
+        <img class="boom" src="IMG_0234.PNG">
+        <img class="boomtext" src="IMG_0236.PNG" alt="">
+
+        <div class="tap-hint">Tap me!</div>
+
+        <button class="sound-btn" data-page="page1">🔊</button>
+
+        <audio class="floor-shake-sound" src="Floor shake.m4a" preload="auto"></audio>
+        <audio class="boom-sound" src="Boom(1).m4a" preload="auto"></audio>
+    </section>
+
+    <!-- ================= PAGE 2 ================= -->
+    <section class="page page2">
+        <img class="background" src="base1.PNG">
+
+        <!-- Add inside .page2, directly after the base1 background image -->
+        <img class="gif-panel gates" src="IMG_0247.GIF" alt="">
+        <img class="gif-panel monster-swoosh" src="IMG_0245.GIF" alt="">
+      
+        <img class="gif-panel portal" src="IMG_0248.GIF" alt="">
+
+        <div class="movein-trigger"></div>
+        <img class="movein" src="movein.PNG">
+        <img class="crunch" src="crunch.GIF">
+        <div class="crunch-text">CRUNCH!</div>
+        <div class="clang-text">CLANG!</div>
+        <div class="swoosh-text">SWOOSH</div>
+
+        <div class="tap-hint2">Tap to strike again</div>
+
+        <button class="sound-btn" data-page="page2">🔊</button>
+
+        <audio class="sword-sound" src="Sword.m4a" preload="auto"></audio>
+    </section>
+
+    <!-- ================= PAGE 3 ================= -->
+    <section class="page page3">
+        <img class="background" src="base2.PNG">
+
+        <div class="cloud-trigger"></div>
+
+        <img class="cloud cloud-left" src="cloud1.PNG">
+        <img class="cloud cloud-right" src="cloud2.PNG">
+
+          <img class="gif-panel rain" src="IMG_0244.GIF" alt="">
+
+        <img class="grass" src="grass.GIF">
+        <div class="page3-text">WHOOSH...</div>
+        <div class="hiss-text">HISSSS</div>
+        <div class="crackle-text">CRACKLE</div>
+        <div class="gone-text">...end.</div>
+
+        <button class="sound-btn" data-page="page3">🔊</button>
+
+        <audio class="fire-sound" src="Fire.m4a" preload="auto"></audio>
+        <audio class="wind-sound" src="Wind.m4a" preload="auto"></audio>
+    </section>
+
+</div>
+
+<script>
+
+/* ==========================
+   VISUAL REVEAL — scroll driven
+   ========================== */
+
+const revealEls = document.querySelectorAll(
+    ".movein, .cloud, .boom, .boomtext, .monster, .monster-text, " +
+    ".crunch, .crunch-text, .growl-text, .stomp-text, " +
+    ".clang-text, .swoosh-text, .page3-text, .hiss-text, " +
+    ".crackle-text, .gone-text, .tap-hint, .tap-hint2"
+);
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        entry.target.classList.toggle("show", entry.isIntersecting);
+    });
+}, {
+    threshold: 0.15,
+    rootMargin: "0px 0px -10% 0px"
+});
+
+revealEls.forEach(el => observer.observe(el));
+
+const moveinTrigger = document.querySelector(".movein-trigger");
+const moveinTarget = document.querySelector(".movein");
+
+const moveinObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        moveinTarget.classList.toggle("show", entry.isIntersecting);
+    });
+}, { threshold: 0.15 });
+
+moveinObserver.observe(moveinTrigger);
+
+const cloudTrigger = document.querySelector(".cloud-trigger");
+const cloudTargets = document.querySelectorAll(".cloud");
+
+const cloudObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        cloudTargets.forEach(cloud => {
+            cloud.classList.toggle("show", entry.isIntersecting);
+        });
+    });
+}, { threshold: 0.15 });
+
+cloudObserver.observe(cloudTrigger);
+
+/* ==========================
+   SOUND — button-triggered
+   ========================== */
+
+function playPageSounds(pageClass){
+    const page = document.querySelector("." + pageClass);
+
+    if (pageClass === "page1") {
+        const floorShake = page.querySelector(".floor-shake-sound");
+        const boomSound = page.querySelector(".boom-sound");
+        floorShake.currentTime = 0;
+        floorShake.play().catch(() => {});
+        boomSound.currentTime = 0;
+        boomSound.play().catch(() => {});
+    }
+
+    if (pageClass === "page2") {
+        const swordSound = page.querySelector(".sword-sound");
+        swordSound.currentTime = 0;
+        swordSound.play().catch(() => {});
+    }
+
+    if (pageClass === "page3") {
+        const fireSound = page.querySelector(".fire-sound");
+        const windSound = page.querySelector(".wind-sound");
+        fireSound.currentTime = 0;
+        fireSound.play().catch(() => {});
+        windSound.currentTime = 0;
+        windSound.play().catch(() => {});
+    }
+}
+
+document.querySelectorAll(".sound-btn").forEach(btn => {
+    btn.addEventListener("click", () => playPageSounds(btn.dataset.page));
+});
+
+/* ==========================
+   INTERACTIONS — "signs of life"
+   Tap panels to trigger reactions on demand,
+   independent of scroll position
+   ========================== */
+
+// PAGE 1 — tap the monster to make it flinch/re-roar
+const monsterEl = document.querySelector(".monster");
+const growlEl = document.querySelector(".growl-text");
+
+monsterEl.addEventListener("click", () => {
+    monsterEl.classList.remove("flinch");
+    void monsterEl.offsetWidth; // restart animation
+    monsterEl.classList.add("flinch");
+
+    growlEl.classList.remove("show");
+    void growlEl.offsetWidth;
+    growlEl.classList.add("show");
+
+    playPageSounds("page1");
+});
+
+// PAGE 2 — tap the crunch graphic to strike again
+const crunchEl = document.querySelector(".crunch");
+const crunchTextEl = document.querySelector(".crunch-text");
+
+crunchEl.addEventListener("click", () => {
+    crunchEl.classList.remove("restrike");
+    void crunchEl.offsetWidth;
+    crunchEl.classList.add("restrike");
+
+    crunchTextEl.classList.remove("restrike");
+    void crunchTextEl.offsetWidth;
+    crunchTextEl.classList.add("restrike");
+
+    playPageSounds("page2");
+});
+
+// PAGE 3 — tap the grass to trigger a wind gust
+const grassEl = document.querySelector(".grass");
+const cloudsEl = document.querySelectorAll(".cloud");
+
+grassEl.addEventListener("click", () => {
+    grassEl.classList.remove("gust");
+    void grassEl.offsetWidth;
+    grassEl.classList.add("gust");
+
+    cloudsEl.forEach(cloud => {
+        cloud.classList.remove("gust");
+        void cloud.offsetWidth;
+        cloud.classList.add("gust");
+    });
+
+    playPageSounds("page3");
+});
+
+</script>
+
+</body>
+</html>

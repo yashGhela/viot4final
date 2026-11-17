@@ -1,0 +1,9 @@
+@import url("https://use.typekit.net/fot7exv.css");
+@import url("https://use.typekit.net/fot7exv.css");
+@import "tailwindcss";
+
+
+@theme{
+    --default-font-family: "futura-pt", sans-serif;
+    --font-heading: "cofo-cinema1909", sans-serif;
+}
