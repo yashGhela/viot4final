@@ -41,6 +41,7 @@ import bw from "../assets/bgbw.jpg"
 
 import {motion} from "motion/react"
 import { useNavigate } from "react-router"
+import NavBar from "../components/NavBar"
 
 
 function Home() {
@@ -49,53 +50,69 @@ function Home() {
  
   return (
    <div  >
+
+    <NavBar/>
+
+   
+
     {/* Intro hero section */}
     <motion.div
+    id="hero"
     initial={{opacity:0, y:20}}
     whileInView={{opacity:1, y:0}}
      style={{backgroundImage:`url(${bgImage})`, backgroundSize:"cover"}} className="relative overflow-hidden text-center   py-52">
-      <p   className=" font-heading text-9xl font-bold text-white" >Hi I'm Yash</p>
-
+      
+      <p   className=" font-heading text-9xl font-bold text-white" >Hi I'm Yash </p>
+      <p className="text-gray-200  px-80 text-4xl font-bold">I'm a multidisciplinary designer and developer from South Africa with a focus on game development and web design.</p>
+     
       <div className="flex flex-col items-center justify-center">
         <motion.button
         onClick={()=>{navigate('/infographic')}}
          whileHover={{ y: -5}}
       whileTap={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-         style={{backgroundImage: `url(${buttonscrap})`, backgroundSize: "100% 100%"}} className=" cursor-pointer shadow-md   w-auto p-5 mx-10 mt-20">View my infographic</motion.button>
+         style={{backgroundImage: `url(${buttonscrap})`, backgroundSize: "100% 100%"}} className=" cursor-pointer shadow-md text-lg   font-semibold w-auto p-14 mx-10 mt-20">View my infographic</motion.button>
       <motion.button
       onClick={()=>{navigate('/comic')}}
        whileHover={{ y: -5}}
       whileTap={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      style={{backgroundImage: `url(${buttonscrap})`, backgroundSize: "100% 100%"}} className=" cursor-pointer  w-auto p-5 mx-10 mt-5">View my motion-comic</motion.button>
+      style={{backgroundImage: `url(${buttonscrap})`, backgroundSize: "100% 100%"}} className=" cursor-pointer text-lg   font-semibold w-auto p-14 mx-10 mt-5">View my motion-comic</motion.button>
       </div>
 
    {/* Top-left: X-Men */}
 <motion.img
   src={xmen}
   alt="X-Men"
-  className="absolute left-10 top-10 w-64 pointer-events-none z-0 drop-shadow-2xl"
-  initial={{ opacity: 0, x: -200, y: -100, rotate: -10 }}
-  animate={{
-    opacity: 1,
-    x: 0,
-    y: [0, -20, 0],
-    rotate: [0, -3, 0],
-  }}
-  transition={{
-    opacity: { duration: 0.8 },
-    x: { type: "spring", stiffness: 60, damping: 12 },
-    y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-    rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-  }}
+   className="absolute left-10 top-10 w-64 cursor-pointer z-0 drop-shadow-2xl"
+
+    initial={{ opacity: 0, x: -200, y: -100, rotate: -10 }}
+
+    animate={{
+        opacity: 1,
+        x: 0,
+        y: [0, -20, 0],
+        rotate: [0, -3, 0],
+    }}
+
+    whileTap={{
+        scale: 1.2,
+        rotate: 10
+    }}
+
+    transition={{
+        opacity: { duration: 0.8 },
+        x: { type: "spring", stiffness: 60, damping: 12 },
+        y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+        rotate: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+    }}
 />
 
 {/* Top-right: Excl */}
 <motion.img
   src={excl}
   alt="Excl"
-  className="absolute right-10 top-10 w-32 pointer-events-none z-0 drop-shadow-2xl"
+  className="absolute cursor-pointer right-10 top-10 w-32 pointer-events-none z-0 drop-shadow-2xl"
   initial={{ opacity: 0, x: 200, y: -100, rotate: 10 }}
   animate={{
     opacity: 1,
@@ -103,6 +120,12 @@ function Home() {
     y: [0, -20, 0],
     rotate: [0, 3, 0],
   }}
+
+    whileTap={{
+        scale: 1.2,
+        rotate: 10
+    }}
+
   transition={{
     opacity: { duration: 0.8 },
     x: { type: "spring", stiffness: 60, damping: 12 },
@@ -168,11 +191,11 @@ function Home() {
     backgroundRepeat: "no-repeat",
     
   }}
-  className=" p-24 text-black ">
+  className=" md:p-24 text-black ">
 
 
        <p className=" font-heading text-4xl font-bold">About Me</p>
-      <ul className=" mt-10  list-disc">
+      <ul className=" md:mt-10  list-disc">
         <li>I'm a multimedia student at the University of Pretoria</li>
         <li>I've been drawing since I was born</li>
         <li>I started programming at 14</li>
@@ -289,14 +312,19 @@ function Home() {
         backgroundRepeat: "no-repeat",
         
       }}
-      className="w-full h-full items-center justify-center text-center pt-52"
+      className="w-full h-full items-center justify-center text-center lg:pt-40"
       >
         <p className=" font-heading text-4xl font-bold">Skills</p>
-      <ul className=" mt-10 text-lg  list-disc">
-        <li>C++, JS, React, NextJS, Vue</li>
-        <li>Adobe Suite</li>
-        <li>Godot</li>
-        <li>Blender</li>
+        <p  className="text-lg">A collection of skills I've learnt in uni and <br/> through building my own projects</p>
+      <ul className=" mt-5 text-lg  list-disc">
+        <li className="font-bold text-lg">C++</li>
+        <li className="font-bold text-lg">JS</li>
+        <li className="font-bold text-lg" >React</li>
+        <li className="font-bold text-lg">NextJs</li>
+        <li className="font-bold text-lg">Vue</li>
+        <li className="font-bold text-lg">Adobe Suite</li>
+        <li className="font-bold text-lg">Godot</li>
+        <li className="font-bold text-lg">Blender</li>
       </ul>
       </div>
     </motion.div>
@@ -314,13 +342,24 @@ function Home() {
         backgroundRepeat: "no-repeat",
         
       }}
-      className="w-full h-full items-center justify-center text-center pt-52">
+      className="w-[120%] h-[120%] items-center justify-center text-center lg:pt-48 px-10">
        <p className=" font-heading text-4xl font-bold">Games I love</p>
-      <ul className=" mt-10  list-decimal">
-        <li>The Legend of Zelda Breath of the Wild</li>
-        <li>Ratchet and Clank</li>
-        <li>Spider-man PS4</li>
-        <li>Apex Legends</li>
+      <ul className=" mt-10  list-disc  list-none">
+        <li className="font-bold">1.The Legend of Zelda Breath of the Wild
+           <br/>
+           <p className="font-light">- Easily one of my favourite games of all time, unmatched freedom</p>
+        </li>
+        <li className="font-bold">2.Ratchet and Clank
+
+           <br/>
+           <p className="font-light">- The first game series i ever played, holds a really special place in my heart </p>
+
+        </li>
+        <li className="font-bold">3.Spider-man PS4</li>
+        <li className="font-bold">4.Uncharted
+          <br/>
+          <p className="font-light">- The story is so good</p>
+        </li>
       </ul>
      </div>
 
@@ -421,15 +460,17 @@ function Home() {
         backgroundSize:"80% 80%"
         
       }}
-      className="w-full h-full items-center justify-center text-center text-white pt-52"
+      className="w-full h-full items-center justify-center text-center text-white lg:pt-52"
       
       >
         <p className=" font-heading text-4xl font-bold">My Letterboxd 4</p>
       <ul className=" mt-10  list-decimal">
-        <li>The Batman</li>
-        <li>Scott Pilgrim vs the World</li>
-        <li>Harold and Kumar Go To White Castle</li>
-        <li>Chungking Express</li>
+        <li  className="font-black text-lg">The Batman</li>
+        <li className="font-black text-lg">The Social Network</li>
+        <li className="font-black text-lg">Harold and Kumar Go To White Castle</li>
+        <li className="font-black text-lg">Chungking Express</li>
+
+        <button className="px-4 mt-20 hover:cursor-pointer py-2 rounded-xl text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300" onClick={()=>{window.location.href="https://letterboxd.com/yachhu/"}}>See More</button>
       </ul>
       </div>
 
@@ -522,7 +563,7 @@ function Home() {
     <motion.div
     initial={{opacity:0, y:20}}
     whileInView={{opacity:1, y:0}}  style={{backgroundImage:`url(${bw})`, backgroundSize:"cover"}} className="flex  h-full py-32 flex-col text-black items-center justify-center">
-      <p className=" font-heading text-4xl text-white font-bold">Projects</p>
+      <p className=" font-heading text-4xl text-white font-bold">Other Work</p>
       
       <div className="grid grid-cols-2 gap-5">
       <div>
@@ -535,6 +576,10 @@ function Home() {
           }}
            initial={{y:0}} whileHover={{y:-5}} className="bg-neutral-200 rotate-3 p-5 m-10 ">
         <p className=" text-lg font-bold">Blame</p>
+        <div className="flex p-2">
+          <p className="bg-green-200 mr-2  p-1 rounded-lg">Godot</p>
+          <p className="bg-blue-200 mx-2  p-1 rounded-lg">Blender</p>
+        </div>
         <p>An action adventure game I'm working on</p>
         <p className=" italic">TBA</p>
       </motion.div>
@@ -548,6 +593,10 @@ function Home() {
        }}
       initial={{y:0}} whileHover={{y:-5}} className="bg-neutral-200 p-5 m-10  -rotate-2 shadow-md">
         <p className=" text-lg font-bold">Entity Removal Service</p>
+        <div className="flex p-2">
+          <p className="bg-green-200 mr-2  p-1 rounded-lg">Godot</p>
+          <p className="bg-blue-200 mx-2  p-1 rounded-lg">Blender</p>
+        </div>
          <img src={ers}  />
         <p>An short action and platforming demo game. Out on Itch </p>
         <p className=" italic">2026</p>
@@ -563,6 +612,10 @@ function Home() {
        }}
        initial={{y:0}} whileHover={{y:-5}} className="bg-neutral-200 rotate-3 p-5 m-10 rounded-md">
         <p className=" text-lg font-bold">Text Me Back</p>
+        <div className="flex p-2">
+          <p className="bg-green-200 mr-2  p-1 rounded-lg">Godot</p>
+          <p className="bg-blue-200 mx-2  p-1 rounded-lg">Blender</p>
+        </div>
          <img src={tmb}  />
         <p>A stealth game about texting your girlfriend. Out on Itch</p>
         <p className=" italic">2026</p>
@@ -580,6 +633,12 @@ function Home() {
        }}
          initial={{y:0}} whileHover={{y:-5}} className="bg-neutral-200 rotate-6 p-5 w-fit ml-40 m-10 rounded-md">
         <p className=" text-lg font-bold">Aruarian AI</p>
+        <div className="flex p-2">
+          <p className="bg-red-200 mr-2  p-1 rounded-lg">NextJS</p>
+          <p className="bg-yellow-200 mx-2  p-1 rounded-lg">Tailwind</p>
+          <p className="bg-emerald-200 mx-2  p-1 rounded-lg">MongoDB</p>
+           <p className="bg-blue-200 mx-2  p-1 rounded-lg">Vercel</p>
+        </div>
          <img src={aruarian}  />
         <p>Natural language AI task manager assistant</p>
         <p className=" italic">2024</p>
@@ -596,12 +655,20 @@ function Home() {
       
       initial={{y:0}} whileHover={{y:-5}} className="bg-neutral-200 -rotate-6 p-5 m-10 rounded-md">
         <p className=" text-lg font-bold">Artfolio</p>
+         <div className="flex p-2">
+          <p className="bg-red-200 mr-2  p-1 rounded-lg">NextJS</p>
+          <p className="bg-yellow-200 mx-2  p-1 rounded-lg">Tailwind</p>
+          <p className="bg-emerald-200 mx-2  p-1 rounded-lg">Firebase</p>
+           <p className="bg-blue-200 mx-2  p-1 rounded-lg">Vercel</p>
+        </div>
         <img src={artfolio}  />
         <p>A custom art portfolio website creator</p>
         <p className=" italic">2023</p>
       </motion.div>
        </div>
       </div>
+
+       <button className="px-4 mt-20 hover:cursor-pointer py-2 rounded-xl text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300" onClick={()=>{window.location.href="https://yachhu.itch.io"}}>Play my games</button>
 
       
     </motion.div>
@@ -622,7 +689,7 @@ function Home() {
         backgroundSize:"100% 100%"
         
       }}
-      className="  w-1/2 h-full items-center justify-center text-center text-black pt-48"
+      className="  w-1/2 h-full items-center justify-center text-center text-black lg:pt-48"
       
       >
         <p className=" font-heading text-4xl font-bold">Thanks For Visiting!</p>
@@ -633,6 +700,14 @@ function Home() {
         <li><a className="hover:underline" href="https://yachhu.itch.io">Play my games!</a></li>
         
       </ul>
+      
+
+      <button
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    className="px-4 mt-20 hover:cursor-pointer py-2 rounded-xl text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300"
+>
+    Back To Top ↑
+</button>
       </div>
       </motion.div>
 
