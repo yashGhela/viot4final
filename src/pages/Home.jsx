@@ -62,8 +62,8 @@ function Home() {
     whileInView={{opacity:1, y:0}}
      style={{backgroundImage:`url(${bgImage})`, backgroundSize:"cover"}} className="relative overflow-hidden text-center   py-52">
       
-      <p   className=" font-heading text-9xl font-bold text-white" >Hi I'm Yash </p>
-      <p className="text-gray-200  px-80 text-4xl font-bold">I'm a multidisciplinary designer and developer from South Africa with a focus on game development and web design.</p>
+      <p   className=" font-heading text-8xl font-bold text-white" >YASH GHELA  </p>
+      <p className="text-gray-200  px-80 text-5xl font-bold">is a multidisciplinary designer and developer from South Africa with a focus on game development and web design.</p>
      
       <div className="flex flex-col items-center justify-center">
         <motion.button
